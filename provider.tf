@@ -5,12 +5,6 @@ terraform {
       version = "3.65.0"
     }
   }
-  cloud {
-    organization = "santospedroh"
-    workspaces {
-      name = "gh-actions-demo"
-    }
-  }
 }
 
 provider "aws" {
