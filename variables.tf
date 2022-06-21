@@ -50,6 +50,16 @@ variable "sg_snake_name" {
   default     = "sg-snake-name"
 }
 
+variable "sg_tags" {
+  description = "Tags to apply to resources created by Security Group module"
+  type        = map(string)
+  default = {
+    Terraform = "true"
+    Environment = "game"
+  }
+}
+
+
 variable "instance_type" {
   type    = string
   default = "t1.micro"
@@ -65,4 +75,16 @@ variable "instance_ami" {
   default = "ami-0cff7528ff583bf9a"
 }
 
+variable "instance_tags" {
+  description = "Tags to apply to resources created by Instances module"
+  type        = map(string)
+  default = {
+    Name = "snake-game-ec2"
+    Terraform = "true"
+    Environment = "game"
+    Team = "gamer-development"
+    Application = "snake-game"
+    BU = "java-script"
 
+  }
+}
