@@ -17,13 +17,13 @@ resource "aws_security_group" "game_snake_sg" {
   name        = "instances-snake-sg"
   description = "SG for Instances Snake Security Group"
   vpc_id      = module.vpc.vpc_id
-  
+
   ingress {
-    description      = "Game Snake port 80"
-    from_port        = 80
-    to_port          = 80
-    protocol         = "tcp"
-    cidr_blocks      = ["10.200.0.0/16"]
+    description = "Game Snake port 80"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["10.200.0.0/16"]
   }
   egress {
     from_port        = 0
@@ -37,7 +37,7 @@ resource "aws_security_group" "game_snake_sg" {
 }
 
 module "ec2_instance" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
+  source = "terraform-aws-modules/ec2-instance/aws"
 
   name                   = var.instance_name
   ami                    = var.instance_ami

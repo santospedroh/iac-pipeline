@@ -39,7 +39,7 @@ variable "vpc_tags" {
   description = "Tags to apply to resources created by VPC module"
   type        = map(string)
   default = {
-    Terraform = "true"
+    Terraform   = "true"
     Environment = "game"
   }
 }
@@ -51,18 +51,18 @@ variable "sg_snake_name" {
 }
 
 variable "instance_type" {
-    type = string
-    default = "t1.micro"
+  type    = string
+  default = "t1.micro"
 }
 
 variable "instance_name" {
-    type = string
-    default = "snake-game"
+  type    = string
+  default = "snake-game"
 }
 
 variable "instance_ami" {
-    type = string
-    default = "ami-0cff7528ff583bf9a"
+  type    = string
+  default = "ami-0cff7528ff583bf9a"
 }
 
 
