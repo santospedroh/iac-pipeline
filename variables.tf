@@ -85,6 +85,5 @@ variable "instance_tags" {
     Team = "gamer-development"
     Application = "snake-game"
     BU = "java-script"
-
   }
 }
