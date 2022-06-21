@@ -10,4 +10,4 @@ Infraestrutura na AWS onde irá executar uma instancia simples com nginx e o [Jo
 
 ---
 
-Made with ♥ by Pedro Santos :wave: [Get in touch!](https://www.linkedin.com/in/santospedroh/)# dbre-migration
+Made with ♥ by Pedro Santos :wave: [Get in touch!](https://www.linkedin.com/in/santospedroh/)
