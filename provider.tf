@@ -1,14 +1,8 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
-      version = "3.65.0"
-    }
-  }
-  cloud {
-    organization = "santospedroh"
-    workspaces {
-      name = "gh-actions-demo"
+      source  = "hashicorp/aws"
+      version = "4.19.0"
     }
   }
 }
