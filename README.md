@@ -11,6 +11,6 @@ Infraestrutura na AWS onde irá executar uma instancia simples com nginx e o [Jo
 - [GitHub Actions](https://docs.github.com/pt/actions)
 - [AWS](https://aws.amazon.com/)
 
----
+-----
 
 Made with ♥ by Pedro Santos :wave: [Get in touch!](https://www.linkedin.com/in/santospedroh/)
