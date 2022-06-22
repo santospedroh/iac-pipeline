@@ -1,16 +1,18 @@
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = var.vpc_name
-  cidr = var.vpc_cidr
+  name = "snake-vpc"
+  cidr = "10.200.0.0/16"
 
-  azs             = var.vpc_azs
-  private_subnets = var.vpc_private_subnets
-  public_subnets  = var.vpc_public_subnets
+  azs             = ["us-east-1a", "us-east-1b"]
+  public_subnets  = ["10.200.101.0/24", "10.200.102.0/24"]
 
-  enable_nat_gateway = var.vpc_enable_nat_gateway
+  enable_nat_gateway = true
 
-  tags = var.vpc_tags
+  tags = {
+    Terraform   = "true"
+    Environment = "prod"
+  }
 }
 
 resource "aws_security_group" "game_snake_sg" {
@@ -33,18 +35,27 @@ resource "aws_security_group" "game_snake_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = var.sg_tags
+  tags = {
+    Terraform = "true"
+    Environment = "prod"
+  }
 }
 
 module "ec2_instance" {
   source = "terraform-aws-modules/ec2-instance/aws"
 
-  name                   = var.instance_name
-  ami                    = var.instance_ami
-  instance_type          = var.instance_type
+  name                   = "snake-game"
+  ami                    = "ami-0cff7528ff583bf9a"
+  instance_type          = "t1.micro"
   vpc_security_group_ids = [aws_security_group.game_snake_sg.id]
   subnet_id              = module.vpc.public_subnets[0]
   user_data              = file("userdata.sh")
-
-  tags = var.instance_tags
+  tags = {
+    Name = "snake-game-ec2"
+    Terraform = "true"
+    Environment = "prod"
+    Team = "gamer-development"
+    Application = "snake-game"
+    Language = "javascript"
+  }
 }
