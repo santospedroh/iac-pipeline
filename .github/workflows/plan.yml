@@ -11,6 +11,9 @@ jobs:
   terraform:
     name: "Terraform"
     runs-on: ubuntu-latest
+     # Variavel de ambiente workdir onde será gerado o arquivo plan
+    env:
+      working-directory: infracost
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -28,10 +31,16 @@ jobs:
         id: validate
         run: terraform validate -no-color
 
+       # Aqui vamos gerar o terraform plan em arquivo para passar para o infracost
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -input=false
-        continue-on-error: true
+        run: terraform plan -out tfplan.binary
+        working-directory: ${{ env.working-directory }}
+
+      - name: Terraform show
+        id: show
+        run: terraform show -json tfplan.binary > plan.json
+        working-directory: ${{ env.working-directory }}
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
@@ -60,6 +69,19 @@ jobs:
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve -input=false
+      # Chamar a action do infracost passando a nossa secret
+      - name: Setup Infracost
+        uses: infracost/actions/setup@v1
+        with:
+          api-key: ${{ secrets.INFRACOST_API_KEY }}
+    
+      # Passar o arquivo plan salvo no workdir para o infracost gerar os custos
+      - name: Generate Infracost JSON
+        run: infracost breakdown --path plan.json --format json --out-file /tmp/infracost.json
+        working-directory: ${{ env.working-directory }}
+    
+      - name: Infracost Actions
+        uses: infracost/actions/comment@v1
+        with:
+          path: /tmp/infracost.json
+          behavior: update # Create a single comment and update it. The "quietest" option.

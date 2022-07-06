@@ -46,7 +46,7 @@ module "ec2_instance" {
 
   name                   = "snake-game"
   ami                    = "ami-0cff7528ff583bf9a"
-  instance_type          = "t1.micro"
+  instance_type          = "t3.micro"
   vpc_security_group_ids = [aws_security_group.game_snake_sg.id]
   subnet_id              = module.vpc.public_subnets[0]
   user_data              = file("userdata.sh")
