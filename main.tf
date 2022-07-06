@@ -44,9 +44,11 @@ resource "aws_security_group" "game_snake_sg" {
 module "ec2_instance" {
   source = "terraform-aws-modules/ec2-instance/aws"
 
-  name                   = "snake-game"
+  for_each = toset(["one", "two"])
+
+  name                   = "snake-game-${each.key}"
   ami                    = "ami-0cff7528ff583bf9a"
-  instance_type          = "t3.micro"
+  instance_type          = "m5.large"
   vpc_security_group_ids = [aws_security_group.game_snake_sg.id]
   subnet_id              = module.vpc.public_subnets[0]
   user_data              = file("userdata.sh")
