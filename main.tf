@@ -44,11 +44,11 @@ resource "aws_security_group" "game_snake_sg" {
 module "ec2_instance" {
   source = "terraform-aws-modules/ec2-instance/aws"
 
-  for_each = toset(["one", "two"])
+  for_each = toset(["server-01", "server-02"]) # Duas instâncias ec2
 
   name                   = "snake-game-${each.key}"
   ami                    = "ami-0cff7528ff583bf9a"
-  instance_type          = "m5.large"
+  instance_type          = "m5.large" # Tipo das instâncias m5.large
   vpc_security_group_ids = [aws_security_group.game_snake_sg.id]
   subnet_id              = module.vpc.public_subnets[0]
   user_data              = file("userdata.sh")

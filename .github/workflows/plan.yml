@@ -11,9 +11,7 @@ jobs:
   terraform:
     name: "Terraform"
     runs-on: ubuntu-latest
-     # Variavel de ambiente workdir onde será gerado o arquivo plan
-    #env:
-      #working-directory: infracost
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -35,12 +33,10 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: terraform plan -out tfplan.binary
-        #working-directory: ${{ env.working-directory }}
 
       - name: Terraform show
         id: show
         run: terraform show -json tfplan.binary > plan.json
-        #working-directory: ${{ env.working-directory }}
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
@@ -75,13 +71,12 @@ jobs:
         with:
           api-key: ${{ secrets.INFRACOST_API_KEY }}
     
-      # Passar o arquivo plan salvo no workdir para o infracost gerar os custos
+      # Passar o arquivo plan.json para o infracost gerar os custos
       - name: Generate Infracost JSON
         run: infracost breakdown --path plan.json --format json --out-file /tmp/infracost.json
-        #working-directory: ${{ env.working-directory }}
     
       - name: Infracost Actions
         uses: infracost/actions/comment@v1
         with:
           path: /tmp/infracost.json
-          behavior: update # Create a single comment and update it. The "quietest" option.
+          behavior: update
